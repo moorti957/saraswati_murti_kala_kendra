@@ -1,0 +1,1133 @@
+<!doctype html>
+<html lang="en" class="h-full" style="scroll-behavior:smooth;">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Saraswati Murti Kala Kendra</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&amp;family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&amp;family=DM+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+  <script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        gold: '#D4AF37',
+        'gold-dark': '#B8960C',
+        'gold-light': '#E8CC6E',
+        obsidian: '#0B0B0B',
+        'obsidian-light': '#1A1A1A',
+        'obsidian-mid': '#141414'
+      },
+      fontFamily: {
+        cinzel: ['Cinzel', 'serif'],
+        cormorant: ['Cormorant Garamond', 'serif'],
+        dm: ['DM Sans', 'sans-serif']
+      }
+    }
+  }
+}
+</script>
+  <style>
+html, body { height: 100%; margin: 0; background: #0B0B0B; }
+* { box-sizing: border-box; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #0B0B0B; }
+::-webkit-scrollbar-thumb { background: #D4AF37; border-radius: 3px; }
+
+/* Animations */
+@keyframes fadeUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+@keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+@keyframes spin-slow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+@keyframes pulse-gold { 0%,100% { box-shadow: 0 0 20px rgba(212,175,55,0.3); } 50% { box-shadow: 0 0 40px rgba(212,175,55,0.6); } }
+
+.anim-fade-up { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+.anim-fade-up.visible { opacity: 1; transform: translateY(0); }
+.anim-fade { opacity: 0; transition: opacity 0.6s ease; }
+.anim-fade.visible { opacity: 1; }
+.anim-scale { opacity: 0; transform: scale(0.9); transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
+.anim-scale.visible { opacity: 1; transform: scale(1); }
+
+.glass { background: rgba(255,255,255,0.03); backdrop-filter: blur(20px); border: 1px solid rgba(212,175,55,0.15); }
+.glass-card { background: rgba(255,255,255,0.04); backdrop-filter: blur(16px); border: 1px solid rgba(212,175,55,0.12); transition: all 0.4s ease; }
+.glass-card:hover { background: rgba(255,255,255,0.07); border-color: rgba(212,175,55,0.35); transform: translateY(-6px); box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 30px rgba(212,175,55,0.1); }
+
+.btn-gold { background: linear-gradient(135deg, #D4AF37, #B8960C); color: #0B0B0B; font-weight: 700; transition: all 0.3s ease; position: relative; overflow: hidden; }
+.btn-gold:hover { box-shadow: 0 0 30px rgba(212,175,55,0.5); transform: translateY(-2px); }
+.btn-gold::after { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, transparent 40%, rgba(255,255,255,0.3) 50%, transparent 60%); background-size: 200% 100%; animation: shimmer 3s infinite; }
+
+.btn-outline { border: 1px solid rgba(212,175,55,0.5); color: #D4AF37; transition: all 0.3s ease; }
+.btn-outline:hover { background: rgba(212,175,55,0.1); border-color: #D4AF37; box-shadow: 0 0 20px rgba(212,175,55,0.2); }
+
+.mandala-bg { position: fixed; top: 50%; left: 50%; width: 800px; height: 800px; transform: translate(-50%,-50%); opacity: 0.02; pointer-events: none; z-index: 0; }
+
+.gold-line { height: 1px; background: linear-gradient(90deg, transparent, #D4AF37, transparent); }
+
+.product-img-wrap { position: relative; overflow: hidden; }
+.product-img-wrap::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(11,11,11,0.8) 0%, transparent 50%); }
+
+.nav-link { position: relative; color: #ccc; transition: color 0.3s; }
+.nav-link:hover, .nav-link.active { color: #D4AF37; }
+.nav-link::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: #D4AF37; transition: width 0.3s; }
+.nav-link:hover::after, .nav-link.active::after { width: 100%; }
+
+.page { display: none; }
+.page.active { display: block; animation: fadeIn 0.5s ease; }
+
+.hero-pattern {
+  background-image: radial-gradient(circle at 20% 50%, rgba(212,175,55,0.08) 0%, transparent 50%),
+                    radial-gradient(circle at 80% 20%, rgba(212,175,55,0.05) 0%, transparent 50%),
+                    radial-gradient(circle at 50% 80%, rgba(212,175,55,0.04) 0%, transparent 50%);
+}
+
+.statue-emoji { font-size: 4rem; filter: drop-shadow(0 0 20px rgba(212,175,55,0.3)); }
+
+.zoom-container { overflow: hidden; cursor: zoom-in; }
+.zoom-container img, .zoom-container .zoom-placeholder { transition: transform 0.4s ease; }
+.zoom-container:hover img, .zoom-container:hover .zoom-placeholder { transform: scale(1.15); }
+
+.whatsapp-float { position: fixed; bottom: 24px; right: 24px; z-index: 999; width: 56px; height: 56px; border-radius: 50%; background: #25D366; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 20px rgba(37,211,102,0.4); transition: all 0.3s; cursor: pointer; }
+.whatsapp-float:hover { transform: scale(1.1); box-shadow: 0 6px 30px rgba(37,211,102,0.6); }
+
+input:focus, textarea:focus, select:focus { outline: none; border-color: #D4AF37 !important; box-shadow: 0 0 0 2px rgba(212,175,55,0.2); }
+
+.category-card { position: relative; overflow: hidden; border-radius: 16px; cursor: pointer; }
+.category-card .cat-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(11,11,11,0.9) 0%, rgba(11,11,11,0.3) 50%, transparent 100%); transition: all 0.4s; }
+.category-card:hover .cat-overlay { background: linear-gradient(to top, rgba(212,175,55,0.3) 0%, rgba(11,11,11,0.2) 50%, transparent 100%); }
+
+.testimonial-card { position: relative; }
+.testimonial-card::before { content: '"'; position: absolute; top: -10px; left: 16px; font-size: 80px; font-family: 'Cinzel', serif; color: rgba(212,175,55,0.15); line-height: 1; }
+
+.process-step { position: relative; }
+.process-connector { position: absolute; top: 50%; right: -50%; width: 100%; height: 1px; background: linear-gradient(90deg, #D4AF37, transparent); }
+
+/* Cart badge */
+.cart-badge { position: absolute; top: -6px; right: -6px; width: 18px; height: 18px; border-radius: 50%; background: #D4AF37; color: #0B0B0B; font-size: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+
+/* Tabs for detail page */
+.detail-tab { padding: 8px 20px; border-bottom: 2px solid transparent; color: #888; cursor: pointer; transition: all 0.3s; }
+.detail-tab.active { color: #D4AF37; border-color: #D4AF37; }
+.detail-tab:hover { color: #D4AF37; }
+
+/* Filter chip */
+.filter-chip { padding: 6px 16px; border-radius: 20px; border: 1px solid rgba(212,175,55,0.3); color: #999; cursor: pointer; transition: all 0.3s; font-size: 14px; }
+.filter-chip.active, .filter-chip:hover { background: rgba(212,175,55,0.15); border-color: #D4AF37; color: #D4AF37; }
+
+.toast-msg { position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%) translateY(20px); background: rgba(212,175,55,0.95); color: #0B0B0B; padding: 12px 24px; border-radius: 8px; font-weight: 600; z-index: 9999; opacity: 0; transition: all 0.4s ease; pointer-events: none; }
+.toast-msg.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+</style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full font-dm text-white overflow-auto" id="app-body"><!-- Mandala Background -->
+  <div class="mandala-bg">
+   <svg viewbox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg" style="animation: spin-slow 120s linear infinite;"><circle cx="200" cy="200" r="180" stroke="#D4AF37" stroke-width="0.5" /> <circle cx="200" cy="200" r="140" stroke="#D4AF37" stroke-width="0.3" /> <circle cx="200" cy="200" r="100" stroke="#D4AF37" stroke-width="0.3" /> <circle cx="200" cy="200" r="60" stroke="#D4AF37" stroke-width="0.3" /> <path d="M200 20 L200 380 M20 200 L380 200 M60 60 L340 340 M340 60 L60 340" stroke="#D4AF37" stroke-width="0.2" /> <path d="M200 20 Q260 120 200 200 Q140 120 200 20Z" stroke="#D4AF37" stroke-width="0.3" fill="none" /> <path d="M200 380 Q260 280 200 200 Q140 280 200 380Z" stroke="#D4AF37" stroke-width="0.3" fill="none" /> <path d="M20 200 Q120 140 200 200 Q120 260 20 200Z" stroke="#D4AF37" stroke-width="0.3" fill="none" /> <path d="M380 200 Q280 140 200 200 Q280 260 380 200Z" stroke="#D4AF37" stroke-width="0.3" fill="none" />
+   </svg>
+  </div><!-- NAVBAR -->
+  <nav id="navbar" class="fixed top-0 left-0 w-full z-50 transition-all duration-500" style="background: rgba(11,11,11,0.85); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(212,175,55,0.1);">
+   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16 sm:h-20"><!-- Logo -->
+     <div class="flex items-center gap-3 cursor-pointer" onclick="navigateTo('home')">
+      <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center" style="background: linear-gradient(135deg, #D4AF37, #B8960C); animation: pulse-gold 3s infinite;"><span class="text-obsidian font-cinzel font-bold text-lg sm:text-xl">स</span>
+      </div>
+      <div class="hidden sm:block">
+       <div class="font-cinzel text-gold text-sm font-bold tracking-wider" id="nav-company-name">
+        Saraswati Murti
+       </div>
+       <div class="text-[10px] text-gold-light tracking-[0.3em] uppercase opacity-70">
+        Kala Kendra
+       </div>
+      </div>
+     </div><!-- Desktop Nav -->
+     <div class="hidden lg:flex items-center gap-8"><a class="nav-link text-sm font-medium tracking-wide cursor-pointer active" data-page="home" onclick="navigateTo('home')">Home</a> <a class="nav-link text-sm font-medium tracking-wide cursor-pointer" data-page="products" onclick="navigateTo('products')">Collection</a> <a class="nav-link text-sm font-medium tracking-wide cursor-pointer" data-page="about" onclick="navigateTo('about')">About</a> <a class="nav-link text-sm font-medium tracking-wide cursor-pointer" data-page="contact" onclick="navigateTo('contact')">Contact</a>
+     </div><!-- Right section -->
+     <div class="flex items-center gap-3 sm:gap-4"><button class="relative p-2 text-gray-400 hover:text-gold transition-colors" onclick="navigateTo('cart')" aria-label="View cart"> <i data-lucide="shopping-bag" style="width:20px;height:20px;"></i> <span class="cart-badge" id="cart-count">0</span> </button> <button class="relative p-2 text-gray-400 hover:text-gold transition-colors" onclick="navigateTo('account')" aria-label="Account"> <i data-lucide="user" style="width:20px;height:20px;"></i> </button> <button class="lg:hidden p-2 text-gray-400 hover:text-gold transition-colors" onclick="toggleMobileMenu()" aria-label="Menu"> <i data-lucide="menu" style="width:22px;height:22px;" id="menu-icon"></i> </button>
+     </div>
+    </div>
+   </div><!-- Mobile Menu -->
+   <div id="mobile-menu" class="lg:hidden overflow-hidden transition-all duration-500" style="max-height: 0;">
+    <div class="px-4 pb-6 pt-2 flex flex-col gap-4 border-t border-gold/10"><a class="text-gray-300 hover:text-gold transition-colors font-medium py-2 cursor-pointer" onclick="navigateTo('home'); toggleMobileMenu();">Home</a> <a class="text-gray-300 hover:text-gold transition-colors font-medium py-2 cursor-pointer" onclick="navigateTo('products'); toggleMobileMenu();">Collection</a> <a class="text-gray-300 hover:text-gold transition-colors font-medium py-2 cursor-pointer" onclick="navigateTo('about'); toggleMobileMenu();">About</a> <a class="text-gray-300 hover:text-gold transition-colors font-medium py-2 cursor-pointer" onclick="navigateTo('contact'); toggleMobileMenu();">Contact</a>
+    </div>
+   </div>
+  </nav><!-- TOAST -->
+  <div id="toast" class="toast-msg"></div><!-- ==================== HOME PAGE ==================== -->
+  <div id="page-home" class="page active"><!-- Hero Section -->
+   <section class="relative hero-pattern" style="min-height: 100%; display: flex; align-items: center; padding-top: 80px;">
+    <div class="absolute inset-0 overflow-hidden">
+     <div class="absolute top-20 right-10 w-72 h-72 rounded-full opacity-10" style="background: radial-gradient(circle, #D4AF37, transparent); filter: blur(80px);"></div>
+     <div class="absolute bottom-20 left-10 w-96 h-96 rounded-full opacity-5" style="background: radial-gradient(circle, #D4AF37, transparent); filter: blur(100px);"></div>
+    </div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 relative z-10 w-full">
+     <div class="grid lg:grid-cols-2 gap-12 items-center">
+      <div class="space-y-8">
+       <div class="anim-fade-up">
+        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass mb-6"><span class="w-2 h-2 rounded-full bg-gold"></span> <span class="text-gold-light text-xs tracking-widest uppercase">Handcrafted Since 1985</span>
+        </div>
+        <h1 class="font-cinzel text-4xl sm:text-5xl lg:text-7xl font-bold leading-tight" id="hero-title"><span class="text-white">Divine</span><br><span class="text-transparent bg-clip-text" style="background: linear-gradient(135deg, #D4AF37, #E8CC6E, #D4AF37);">Marble</span><br><span class="text-white">Creations</span></h1>
+       </div>
+       <p class="anim-fade-up text-gray-400 text-lg sm:text-xl font-cormorant italic leading-relaxed max-w-lg" id="hero-subtitle" style="transition-delay: 0.2s;">Handcrafted with devotion, each marble masterpiece carries the soul of centuries-old Indian artistry.</p>
+       <div class="anim-fade-up flex flex-wrap gap-4" style="transition-delay: 0.4s;"><button class="btn-gold px-8 py-4 rounded-xl font-cinzel text-sm tracking-wider" onclick="navigateTo('products')"> Explore Collection </button> <button class="btn-outline px-8 py-4 rounded-xl font-cinzel text-sm tracking-wider" onclick="navigateTo('contact')"> Contact Now </button>
+       </div>
+       <div class="anim-fade-up flex gap-8 pt-4" style="transition-delay: 0.6s;">
+        <div>
+         <span class="text-gold font-cinzel text-2xl font-bold">500+</span><br><span class="text-gray-500 text-xs uppercase tracking-wider">Statues Crafted</span>
+        </div>
+        <div class="w-px bg-gold/20"></div>
+        <div>
+         <span class="text-gold font-cinzel text-2xl font-bold">38+</span><br><span class="text-gray-500 text-xs uppercase tracking-wider">Years Legacy</span>
+        </div>
+        <div class="w-px bg-gold/20"></div>
+        <div>
+         <span class="text-gold font-cinzel text-2xl font-bold">100%</span><br><span class="text-gray-500 text-xs uppercase tracking-wider">Pure Marble</span>
+        </div>
+       </div>
+      </div><!-- Hero Statue Visual -->
+      <div class="anim-scale relative flex justify-center" style="transition-delay: 0.3s;">
+       <div class="relative w-72 h-96 sm:w-80 sm:h-[28rem] rounded-3xl overflow-hidden" style="background: linear-gradient(180deg, rgba(212,175,55,0.1), rgba(11,11,11,0.9)); border: 1px solid rgba(212,175,55,0.2);">
+        <div class="absolute inset-0 flex items-center justify-center flex-col gap-4">
+         <div style="font-size: 8rem; filter: drop-shadow(0 0 40px rgba(212,175,55,0.4));">
+          🙏
+         </div>
+         <div class="font-cinzel text-gold text-sm tracking-[0.3em] uppercase">
+          Sacred Art
+         </div>
+        </div>
+        <div class="absolute bottom-0 left-0 right-0 h-32" style="background: linear-gradient(to top, #0B0B0B, transparent);"></div>
+       </div>
+       <div class="absolute -bottom-4 -right-4 w-24 h-24 rounded-2xl glass flex items-center justify-center" style="animation: float 4s ease-in-out infinite;"><span class="text-4xl">🕉️</span>
+       </div>
+       <div class="absolute -top-4 -left-4 w-20 h-20 rounded-2xl glass flex items-center justify-center" style="animation: float 4s ease-in-out infinite 1s;"><span class="text-3xl">🪷</span>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Gold divider -->
+   <div class="gold-line max-w-4xl mx-auto"></div><!-- Categories Section -->
+   <section class="py-20 sm:py-28 relative">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+     <div class="text-center mb-16 anim-fade-up"><span class="text-gold text-xs tracking-[0.4em] uppercase font-medium">Our Specialties</span>
+      <h2 class="font-cinzel text-3xl sm:text-4xl lg:text-5xl font-bold mt-4 text-white">Sacred Categories</h2>
+      <div class="w-20 h-0.5 bg-gold mx-auto mt-6"></div>
+     </div>
+     <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-6">
+      <div class="category-card glass-card rounded-2xl p-6 sm:p-8 text-center anim-fade-up cursor-pointer" onclick="filterProducts('sai-baba')" style="transition-delay:0.1s;">
+       <div class="text-5xl mb-4">
+        🙏
+       </div>
+       <h3 class="font-cinzel text-gold text-sm font-semibold">Sai Baba</h3>
+       <p class="text-gray-500 text-xs mt-2">12 Designs</p>
+      </div>
+      <div class="category-card glass-card rounded-2xl p-6 sm:p-8 text-center anim-fade-up cursor-pointer" onclick="filterProducts('krishna')" style="transition-delay:0.2s;">
+       <div class="text-5xl mb-4">
+        🦚
+       </div>
+       <h3 class="font-cinzel text-gold text-sm font-semibold">Krishna</h3>
+       <p class="text-gray-500 text-xs mt-2">15 Designs</p>
+      </div>
+      <div class="category-card glass-card rounded-2xl p-6 sm:p-8 text-center anim-fade-up cursor-pointer" onclick="filterProducts('ram')" style="transition-delay:0.3s;">
+       <div class="text-5xl mb-4">
+        🏹
+       </div>
+       <h3 class="font-cinzel text-gold text-sm font-semibold">Ram</h3>
+       <p class="text-gray-500 text-xs mt-2">10 Designs</p>
+      </div>
+      <div class="category-card glass-card rounded-2xl p-6 sm:p-8 text-center anim-fade-up cursor-pointer" onclick="filterProducts('durga')" style="transition-delay:0.4s;">
+       <div class="text-5xl mb-4">
+        🔱
+       </div>
+       <h3 class="font-cinzel text-gold text-sm font-semibold">Durga</h3>
+       <p class="text-gray-500 text-xs mt-2">8 Designs</p>
+      </div>
+      <div class="category-card glass-card rounded-2xl p-6 sm:p-8 text-center anim-fade-up cursor-pointer" onclick="filterProducts('custom')" style="transition-delay:0.5s;">
+       <div class="text-5xl mb-4">
+        ✨
+       </div>
+       <h3 class="font-cinzel text-gold text-sm font-semibold">Custom</h3>
+       <p class="text-gray-500 text-xs mt-2">Made to Order</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- Featured Products -->
+   <section class="py-20 relative" style="background: linear-gradient(180deg, transparent, rgba(212,175,55,0.02), transparent);">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+     <div class="flex flex-col sm:flex-row items-start sm:items-end justify-between mb-12 gap-4">
+      <div class="anim-fade-up"><span class="text-gold text-xs tracking-[0.4em] uppercase font-medium">Curated Selection</span>
+       <h2 class="font-cinzel text-3xl sm:text-4xl font-bold mt-3 text-white">Featured Masterpieces</h2>
+      </div><button class="btn-outline px-6 py-3 rounded-lg text-sm font-medium anim-fade-up" onclick="navigateTo('products')"> View All <i data-lucide="arrow-right" style="width:16px;height:16px;display:inline;vertical-align:middle;margin-left:4px;"></i> </button>
+     </div>
+     <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6" id="featured-grid"></div>
+    </div>
+   </section><!-- Process Section -->
+   <section class="py-20 sm:py-28">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+     <div class="text-center mb-16 anim-fade-up"><span class="text-gold text-xs tracking-[0.4em] uppercase font-medium">Our Journey</span>
+      <h2 class="font-cinzel text-3xl sm:text-4xl lg:text-5xl font-bold mt-4 text-white">How We Create</h2>
+      <div class="w-20 h-0.5 bg-gold mx-auto mt-6"></div>
+     </div>
+     <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div class="text-center anim-fade-up" style="transition-delay:0.1s;">
+       <div class="w-20 h-20 mx-auto rounded-2xl glass flex items-center justify-center mb-6" style="animation: pulse-gold 4s infinite;"><i data-lucide="pen-tool" class="text-gold" style="width:28px;height:28px;"></i>
+       </div>
+       <h3 class="font-cinzel text-gold font-semibold mb-2">Design</h3>
+       <p class="text-gray-500 text-sm leading-relaxed">Conceptualize your vision with our master artisans</p>
+      </div>
+      <div class="text-center anim-fade-up" style="transition-delay:0.2s;">
+       <div class="w-20 h-20 mx-auto rounded-2xl glass flex items-center justify-center mb-6"><i data-lucide="hammer" class="text-gold" style="width:28px;height:28px;"></i>
+       </div>
+       <h3 class="font-cinzel text-gold font-semibold mb-2">Sculpt</h3>
+       <p class="text-gray-500 text-sm leading-relaxed">Hand-carved from premium Makrana marble</p>
+      </div>
+      <div class="text-center anim-fade-up" style="transition-delay:0.3s;">
+       <div class="w-20 h-20 mx-auto rounded-2xl glass flex items-center justify-center mb-6"><i data-lucide="sparkles" class="text-gold" style="width:28px;height:28px;"></i>
+       </div>
+       <h3 class="font-cinzel text-gold font-semibold mb-2">Polish</h3>
+       <p class="text-gray-500 text-sm leading-relaxed">Detailed finishing with gold &amp; paint accents</p>
+      </div>
+      <div class="text-center anim-fade-up" style="transition-delay:0.4s;">
+       <div class="w-20 h-20 mx-auto rounded-2xl glass flex items-center justify-center mb-6"><i data-lucide="truck" class="text-gold" style="width:28px;height:28px;"></i>
+       </div>
+       <h3 class="font-cinzel text-gold font-semibold mb-2">Deliver</h3>
+       <p class="text-gray-500 text-sm leading-relaxed">Secure packaging &amp; nationwide delivery</p>
+      </div>
+     </div>
+    </div>
+   </section><!-- About Preview -->
+   <section class="py-20 relative" style="background: linear-gradient(180deg, transparent, rgba(212,175,55,0.03), transparent);">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+     <div class="grid lg:grid-cols-2 gap-12 items-center">
+      <div class="anim-fade-up">
+       <div class="rounded-3xl overflow-hidden glass p-8 sm:p-12 relative">
+        <div class="text-center space-y-6">
+         <div class="text-7xl sm:text-8xl" style="filter: drop-shadow(0 0 30px rgba(212,175,55,0.3));">
+          🏛️
+         </div>
+         <div class="font-cinzel text-gold text-lg tracking-wider">
+          Est. 1985
+         </div>
+         <div class="font-cormorant text-gray-400 italic text-lg">
+          Jaipur, Rajasthan
+         </div>
+        </div>
+       </div>
+      </div>
+      <div class="space-y-6 anim-fade-up" style="transition-delay: 0.2s;"><span class="text-gold text-xs tracking-[0.4em] uppercase font-medium">Our Legacy</span>
+       <h2 class="font-cinzel text-3xl sm:text-4xl font-bold text-white">Three Generations of Sacred Artistry</h2>
+       <p class="text-gray-400 leading-relaxed">For over three decades, Saraswati Murti Kala Kendra has been the cornerstone of marble craftsmanship in Jaipur. Our artisans carry forward an ancient tradition, transforming raw Makrana marble into divine works of art that grace temples, homes, and hearts across India and beyond.</p>
+       <div class="grid grid-cols-2 gap-4 pt-4">
+        <div class="glass rounded-xl p-4 text-center">
+         <span class="text-gold font-cinzel text-xl font-bold">Premium</span><br><span class="text-gray-500 text-xs">Makrana Marble</span>
+        </div>
+        <div class="glass rounded-xl p-4 text-center">
+         <span class="text-gold font-cinzel text-xl font-bold">Master</span><br><span class="text-gray-500 text-xs">Artisans</span>
+        </div>
+       </div><button class="btn-outline px-6 py-3 rounded-lg text-sm font-medium mt-4" onclick="navigateTo('about')"> Read Our Story <i data-lucide="arrow-right" style="width:16px;height:16px;display:inline;vertical-align:middle;margin-left:4px;"></i> </button>
+      </div>
+     </div>
+    </div>
+   </section><!-- Testimonials -->
+   <section class="py-20 sm:py-28">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+     <div class="text-center mb-16 anim-fade-up"><span class="text-gold text-xs tracking-[0.4em] uppercase font-medium">Testimonials</span>
+      <h2 class="font-cinzel text-3xl sm:text-4xl font-bold mt-4 text-white">Words of Devotion</h2>
+      <div class="w-20 h-0.5 bg-gold mx-auto mt-6"></div>
+     </div>
+     <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="testimonial-card glass-card rounded-2xl p-8 anim-fade-up" style="transition-delay:0.1s;">
+       <div class="flex gap-1 mb-4">
+        <span class="text-gold">★★★★★</span>
+       </div>
+       <p class="text-gray-300 font-cormorant text-lg italic leading-relaxed mb-6">The Sai Baba murti we received is absolutely divine. The detail in the face and hands is extraordinary. A true masterpiece.</p>
+       <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-full bg-gold/20 flex items-center justify-center text-gold font-cinzel font-bold">
+         R
+        </div>
+        <div>
+         <div class="text-white font-medium text-sm">
+          Rajesh Sharma
+         </div>
+         <div class="text-gray-500 text-xs">
+          Mumbai
+         </div>
+        </div>
+       </div>
+      </div>
+      <div class="testimonial-card glass-card rounded-2xl p-8 anim-fade-up" style="transition-delay:0.2s;">
+       <div class="flex gap-1 mb-4">
+        <span class="text-gold">★★★★★</span>
+       </div>
+       <p class="text-gray-300 font-cormorant text-lg italic leading-relaxed mb-6">We ordered a custom Krishna statue for our temple. The artisanship exceeded every expectation. Truly blessed.</p>
+       <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-full bg-gold/20 flex items-center justify-center text-gold font-cinzel font-bold">
+         P
+        </div>
+        <div>
+         <div class="text-white font-medium text-sm">
+          Priya Patel
+         </div>
+         <div class="text-gray-500 text-xs">
+          Ahmedabad
+         </div>
+        </div>
+       </div>
+      </div>
+      <div class="testimonial-card glass-card rounded-2xl p-8 anim-fade-up" style="transition-delay:0.3s;">
+       <div class="flex gap-1 mb-4">
+        <span class="text-gold">★★★★★</span>
+       </div>
+       <p class="text-gray-300 font-cormorant text-lg italic leading-relaxed mb-6">Professional, timely delivery and the marble quality is unmatched. The Durga murti is the centerpiece of our mandir.</p>
+       <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-full bg-gold/20 flex items-center justify-center text-gold font-cinzel font-bold">
+         A
+        </div>
+        <div>
+         <div class="text-white font-medium text-sm">
+          Anil Gupta
+         </div>
+         <div class="text-gray-500 text-xs">
+          Delhi
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- CTA Section -->
+   <section class="py-20 relative">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+     <div class="glass rounded-3xl p-12 sm:p-16 anim-scale relative overflow-hidden">
+      <div class="absolute inset-0" style="background: radial-gradient(circle at center, rgba(212,175,55,0.08), transparent 70%);"></div>
+      <div class="relative z-10"><span class="text-6xl mb-6 block">🙏</span>
+       <h2 class="font-cinzel text-3xl sm:text-4xl font-bold text-white mb-4">Begin Your Sacred Journey</h2>
+       <p class="text-gray-400 font-cormorant text-lg italic max-w-lg mx-auto mb-8">Commission a divine marble creation that will be cherished for generations</p>
+       <div class="flex flex-wrap justify-center gap-4"><button class="btn-gold px-8 py-4 rounded-xl font-cinzel text-sm tracking-wider" onclick="navigateTo('contact')">Get Custom Quote</button> <a href="https://wa.me/919876543210" target="_blank" rel="noopener noreferrer" class="btn-outline px-8 py-4 rounded-xl text-sm font-medium inline-flex items-center gap-2"> <span class="text-lg">💬</span> WhatsApp Us </a>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section>
+  </div><!-- ==================== PRODUCTS PAGE ==================== -->
+  <div id="page-products" class="page">
+   <section class="pt-24 sm:pt-28 pb-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+     <div class="text-center mb-12 anim-fade-up"><span class="text-gold text-xs tracking-[0.4em] uppercase font-medium">Our Collection</span>
+      <h2 class="font-cinzel text-3xl sm:text-4xl lg:text-5xl font-bold mt-4 text-white">Marble Masterpieces</h2>
+      <div class="w-20 h-0.5 bg-gold mx-auto mt-6"></div>
+     </div><!-- Filters -->
+     <div class="flex flex-wrap justify-center gap-3 mb-10 anim-fade-up" id="filter-bar"><button class="filter-chip active" data-filter="all" onclick="applyFilter('all')">All</button> <button class="filter-chip" data-filter="sai-baba" onclick="applyFilter('sai-baba')">Sai Baba</button> <button class="filter-chip" data-filter="krishna" onclick="applyFilter('krishna')">Krishna</button> <button class="filter-chip" data-filter="ram" onclick="applyFilter('ram')">Ram</button> <button class="filter-chip" data-filter="durga" onclick="applyFilter('durga')">Durga</button> <button class="filter-chip" data-filter="hanuman" onclick="applyFilter('hanuman')">Hanuman</button> <button class="filter-chip" data-filter="ganesh" onclick="applyFilter('ganesh')">Ganesh</button> <button class="filter-chip" data-filter="custom" onclick="applyFilter('custom')">Custom</button>
+     </div><!-- Size filter -->
+     <div class="flex flex-wrap justify-center gap-3 mb-10 anim-fade-up"><select class="glass rounded-lg px-4 py-2 text-sm text-gray-300 bg-transparent cursor-pointer" onchange="applySizeFilter(this.value)" aria-label="Filter by size"> <option value="all" style="background:#1A1A1A;">All Sizes</option> <option value="small" style="background:#1A1A1A;">Small (6-12 inch)</option> <option value="medium" style="background:#1A1A1A;">Medium (12-24 inch)</option> <option value="large" style="background:#1A1A1A;">Large (24-48 inch)</option> <option value="xlarge" style="background:#1A1A1A;">Extra Large (48+ inch)</option> </select> <select class="glass rounded-lg px-4 py-2 text-sm text-gray-300 bg-transparent cursor-pointer" onchange="applyPriceSort(this.value)" aria-label="Sort by price"> <option value="default" style="background:#1A1A1A;">Sort by Price</option> <option value="low" style="background:#1A1A1A;">Low to High</option> <option value="high" style="background:#1A1A1A;">High to Low</option> </select>
+     </div><!-- Product Grid -->
+     <div class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="product-grid"></div>
+    </div>
+   </section>
+  </div><!-- ==================== PRODUCT DETAIL PAGE ==================== -->
+  <div id="page-detail" class="page">
+   <section class="pt-24 sm:pt-28 pb-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"><button class="btn-outline px-4 py-2 rounded-lg text-sm mb-8 inline-flex items-center gap-2" onclick="navigateTo('products')"> <i data-lucide="arrow-left" style="width:16px;height:16px;"></i> Back to Collection </button>
+     <div class="grid lg:grid-cols-2 gap-12" id="detail-content"></div><!-- Related Products -->
+     <div class="mt-20">
+      <h3 class="font-cinzel text-2xl font-bold text-white mb-8">Related Masterpieces</h3>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6" id="related-grid"></div>
+     </div>
+    </div>
+   </section>
+  </div><!-- ==================== ABOUT PAGE ==================== -->
+  <div id="page-about" class="page">
+   <section class="pt-24 sm:pt-28 pb-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"><!-- Hero -->
+     <div class="text-center mb-20 anim-fade-up"><span class="text-gold text-xs tracking-[0.4em] uppercase font-medium">Our Story</span>
+      <h1 class="font-cinzel text-4xl sm:text-5xl lg:text-6xl font-bold mt-4 text-white">Saraswati Murti<br><span class="text-transparent bg-clip-text" style="background: linear-gradient(135deg, #D4AF37, #E8CC6E);">Kala Kendra</span></h1>
+      <div class="w-20 h-0.5 bg-gold mx-auto mt-6"></div>
+     </div><!-- Story -->
+     <div class="grid lg:grid-cols-2 gap-12 items-center mb-20">
+      <div class="anim-fade-up">
+       <div class="glass rounded-3xl p-10 text-center">
+        <div class="text-8xl mb-6" style="filter: drop-shadow(0 0 30px rgba(212,175,55,0.3));">
+         ⛏️
+        </div>
+        <div class="font-cinzel text-gold text-lg">
+         The Workshop
+        </div>
+        <div class="font-cormorant text-gray-400 italic mt-2">
+         Where stone becomes spirit
+        </div>
+       </div>
+      </div>
+      <div class="space-y-6 anim-fade-up" style="transition-delay:0.2s;">
+       <h2 class="font-cinzel text-3xl font-bold text-white">A Legacy Carved in Stone</h2>
+       <p class="text-gray-400 leading-relaxed">Founded in 1985 by Master Sculptor Shri Rameshwar Prasad in the heart of Jaipur, Saraswati Murti Kala Kendra began as a small workshop with a grand vision — to keep the ancient art of marble sculpting alive while serving the spiritual needs of devotees worldwide.</p>
+       <p class="text-gray-400 leading-relaxed">Today, under the guidance of the third generation, our team of 25+ skilled artisans continues to create masterpieces from premium Makrana marble — the same marble that was used to build the Taj Mahal.</p>
+      </div>
+     </div><!-- Craftsmanship -->
+     <div class="mb-20">
+      <div class="text-center mb-12 anim-fade-up">
+       <h2 class="font-cinzel text-3xl font-bold text-white">The Art of Craftsmanship</h2>
+       <div class="w-20 h-0.5 bg-gold mx-auto mt-6"></div>
+      </div>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+       <div class="glass-card rounded-2xl p-8 anim-fade-up" style="transition-delay:0.1s;">
+        <div class="text-4xl mb-4">
+         💎
+        </div>
+        <h3 class="font-cinzel text-gold font-semibold mb-3">Premium Material</h3>
+        <p class="text-gray-400 text-sm leading-relaxed">Only the finest Makrana marble, sourced directly from the quarries of Rajasthan, is used in our creations.</p>
+       </div>
+       <div class="glass-card rounded-2xl p-8 anim-fade-up" style="transition-delay:0.2s;">
+        <div class="text-4xl mb-4">
+         🎨
+        </div>
+        <h3 class="font-cinzel text-gold font-semibold mb-3">Hand-Painted Details</h3>
+        <p class="text-gray-400 text-sm leading-relaxed">Every ornament and feature is meticulously hand-painted with gold leaf and natural pigments.</p>
+       </div>
+       <div class="glass-card rounded-2xl p-8 anim-fade-up" style="transition-delay:0.3s;">
+        <div class="text-4xl mb-4">
+         🔍
+        </div>
+        <h3 class="font-cinzel text-gold font-semibold mb-3">Quality Assurance</h3>
+        <p class="text-gray-400 text-sm leading-relaxed">Each piece undergoes 7-point quality inspection before it leaves our workshop.</p>
+       </div>
+      </div>
+     </div><!-- Why Choose Us -->
+     <div class="glass rounded-3xl p-10 sm:p-16 anim-fade-up">
+      <h2 class="font-cinzel text-3xl font-bold text-white text-center mb-12">Why Choose Us</h2>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+       <div class="text-center">
+        <div class="text-gold font-cinzel text-3xl font-bold mb-2">
+         38+
+        </div>
+        <div class="text-gray-400 text-sm">
+         Years of Experience
+        </div>
+       </div>
+       <div class="text-center">
+        <div class="text-gold font-cinzel text-3xl font-bold mb-2">
+         500+
+        </div>
+        <div class="text-gray-400 text-sm">
+         Statues Delivered
+        </div>
+       </div>
+       <div class="text-center">
+        <div class="text-gold font-cinzel text-3xl font-bold mb-2">
+         25+
+        </div>
+        <div class="text-gray-400 text-sm">
+         Master Artisans
+        </div>
+       </div>
+       <div class="text-center">
+        <div class="text-gold font-cinzel text-3xl font-bold mb-2">
+         Pan
+        </div>
+        <div class="text-gray-400 text-sm">
+         India Delivery
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section>
+  </div><!-- ==================== CONTACT PAGE ==================== -->
+  <div id="page-contact" class="page">
+   <section class="pt-24 sm:pt-28 pb-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+     <div class="text-center mb-16 anim-fade-up"><span class="text-gold text-xs tracking-[0.4em] uppercase font-medium">Get In Touch</span>
+      <h1 class="font-cinzel text-4xl sm:text-5xl font-bold mt-4 text-white">Contact Us</h1>
+      <div class="w-20 h-0.5 bg-gold mx-auto mt-6"></div>
+     </div>
+     <div class="grid lg:grid-cols-2 gap-12"><!-- Contact Form -->
+      <div class="glass rounded-3xl p-8 sm:p-10 anim-fade-up">
+       <h3 class="font-cinzel text-xl text-gold font-semibold mb-6">Send Us a Message</h3>
+       <form id="contact-form" onsubmit="handleContactSubmit(event)" class="space-y-5">
+        <div><label for="contact-name" class="text-gray-400 text-sm mb-1 block">Full Name</label> <input id="contact-name" type="text" required placeholder="Your name" class="w-full bg-white/5 border border-gold/20 rounded-xl px-4 py-3 text-white placeholder:text-gray-600 text-sm">
+        </div>
+        <div><label for="contact-phone" class="text-gray-400 text-sm mb-1 block">Phone Number</label> <input id="contact-phone" type="tel" required placeholder="+91 XXXXX XXXXX" class="w-full bg-white/5 border border-gold/20 rounded-xl px-4 py-3 text-white placeholder:text-gray-600 text-sm">
+        </div>
+        <div><label for="contact-email" class="text-gray-400 text-sm mb-1 block">Email (Optional)</label> <input id="contact-email" type="email" placeholder="your@email.com" class="w-full bg-white/5 border border-gold/20 rounded-xl px-4 py-3 text-white placeholder:text-gray-600 text-sm">
+        </div>
+        <div><label for="contact-msg" class="text-gray-400 text-sm mb-1 block">Your Message</label> <textarea id="contact-msg" rows="4" required placeholder="Tell us about the statue you're looking for..." class="w-full bg-white/5 border border-gold/20 rounded-xl px-4 py-3 text-white placeholder:text-gray-600 text-sm resize-none"></textarea>
+        </div><button type="submit" class="btn-gold w-full py-4 rounded-xl font-cinzel text-sm tracking-wider">Send Message</button>
+       </form>
+       <div id="contact-success" class="hidden text-center py-8">
+        <div class="text-5xl mb-4">
+         ✅
+        </div>
+        <h3 class="font-cinzel text-gold text-xl font-semibold mb-2">Message Sent!</h3>
+        <p class="text-gray-400 text-sm">We'll get back to you within 24 hours.</p>
+       </div>
+      </div><!-- Contact Info -->
+      <div class="space-y-6 anim-fade-up" style="transition-delay:0.2s;">
+       <div class="glass rounded-2xl p-6 flex items-start gap-4">
+        <div class="w-12 h-12 rounded-xl bg-gold/10 flex items-center justify-center flex-shrink-0">
+         <i data-lucide="map-pin" class="text-gold" style="width:20px;height:20px;"></i>
+        </div>
+        <div>
+         <h4 class="text-white font-semibold mb-1">Visit Our Workshop</h4>
+         <p class="text-gray-400 text-sm" id="contact-address">Saraswati Murti Kala Kendra, Marble Market, Jaipur, Rajasthan 302001, India</p>
+        </div>
+       </div>
+       <div class="glass rounded-2xl p-6 flex items-start gap-4">
+        <div class="w-12 h-12 rounded-xl bg-gold/10 flex items-center justify-center flex-shrink-0">
+         <i data-lucide="phone" class="text-gold" style="width:20px;height:20px;"></i>
+        </div>
+        <div>
+         <h4 class="text-white font-semibold mb-1">Call Us</h4>
+         <p class="text-gray-400 text-sm" id="contact-phone-display">+91 98765 43210</p>
+         <p class="text-gray-500 text-xs mt-1">Mon-Sat, 9AM - 7PM IST</p>
+        </div>
+       </div>
+       <div class="glass rounded-2xl p-6 flex items-start gap-4">
+        <div class="w-12 h-12 rounded-xl bg-green-500/10 flex items-center justify-center flex-shrink-0">
+         <span class="text-xl">💬</span>
+        </div>
+        <div>
+         <h4 class="text-white font-semibold mb-1">WhatsApp</h4><a href="https://wa.me/919876543210" target="_blank" rel="noopener noreferrer" class="text-green-400 text-sm hover:underline">Chat with us on WhatsApp</a>
+        </div>
+       </div>
+       <div class="glass rounded-2xl p-6 flex items-start gap-4">
+        <div class="w-12 h-12 rounded-xl bg-gold/10 flex items-center justify-center flex-shrink-0">
+         <i data-lucide="mail" class="text-gold" style="width:20px;height:20px;"></i>
+        </div>
+        <div>
+         <h4 class="text-white font-semibold mb-1">Email</h4>
+         <p class="text-gray-400 text-sm">info@saraswatimurti.com</p>
+        </div>
+       </div><!-- Map placeholder -->
+       <div class="glass rounded-2xl overflow-hidden" style="height: 220px; background: linear-gradient(135deg, rgba(212,175,55,0.05), rgba(11,11,11,0.9));">
+        <div class="h-full flex flex-col items-center justify-center text-center p-6"><i data-lucide="map" class="text-gold mb-3" style="width:32px;height:32px;"></i>
+         <p class="text-gray-400 text-sm">Jaipur, Rajasthan, India</p><a href="https://maps.google.com/?q=Jaipur+Marble+Market" target="_blank" rel="noopener noreferrer" class="text-gold text-sm mt-2 hover:underline">Open in Google Maps →</a>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section>
+  </div><!-- ==================== ACCOUNT PAGE ==================== -->
+  <div id="page-account" class="page">
+   <section class="pt-24 sm:pt-28 pb-20">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+     <div class="text-center mb-12 anim-fade-up">
+      <h1 class="font-cinzel text-3xl sm:text-4xl font-bold text-white">My Account</h1>
+      <div class="w-20 h-0.5 bg-gold mx-auto mt-6"></div>
+     </div>
+     <div class="glass rounded-3xl p-8 sm:p-10 anim-fade-up"><!-- Profile -->
+      <div class="flex items-center gap-4 mb-8 pb-8 border-b border-gold/10">
+       <div class="w-16 h-16 rounded-full bg-gold/20 flex items-center justify-center text-gold font-cinzel text-2xl font-bold">
+        G
+       </div>
+       <div>
+        <h3 class="text-white font-semibold text-lg">Guest User</h3>
+        <p class="text-gray-500 text-sm">Welcome to Saraswati Murti Kala Kendra</p>
+       </div>
+      </div><!-- Dashboard tabs -->
+      <div class="grid sm:grid-cols-2 gap-4 mb-8"><button class="glass rounded-xl p-5 text-left hover:border-gold/30 transition-all flex items-center gap-4" onclick="showAccountTab('orders')">
+        <div class="w-10 h-10 rounded-lg bg-gold/10 flex items-center justify-center">
+         <i data-lucide="package" class="text-gold" style="width:20px;height:20px;"></i>
+        </div>
+        <div>
+         <div class="text-white font-medium">
+          Order History
+         </div>
+         <div class="text-gray-500 text-xs">
+          View past inquiries
+         </div>
+        </div></button> <button class="glass rounded-xl p-5 text-left hover:border-gold/30 transition-all flex items-center gap-4" onclick="showAccountTab('saved')">
+        <div class="w-10 h-10 rounded-lg bg-gold/10 flex items-center justify-center">
+         <i data-lucide="heart" class="text-gold" style="width:20px;height:20px;"></i>
+        </div>
+        <div>
+         <div class="text-white font-medium">
+          Saved Products
+         </div>
+         <div class="text-gray-500 text-xs">
+          Your wishlist
+         </div>
+        </div></button>
+      </div><!-- Tab content -->
+      <div id="account-tab-content">
+       <div class="text-center py-12">
+        <div class="text-5xl mb-4">
+         📦
+        </div>
+        <p class="text-gray-400">No orders yet. Start exploring our collection!</p><button class="btn-gold px-6 py-3 rounded-xl font-cinzel text-sm mt-4" onclick="navigateTo('products')">Browse Collection</button>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section>
+  </div><!-- ==================== CART PAGE ==================== -->
+  <div id="page-cart" class="page">
+   <section class="pt-24 sm:pt-28 pb-20">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+     <div class="text-center mb-12 anim-fade-up">
+      <h1 class="font-cinzel text-3xl sm:text-4xl font-bold text-white">Your Cart</h1>
+      <div class="w-20 h-0.5 bg-gold mx-auto mt-6"></div>
+     </div>
+     <div id="cart-content" class="anim-fade-up"></div>
+    </div>
+   </section>
+  </div><!-- ==================== FOOTER ==================== -->
+  <footer class="border-t border-gold/10" style="background: linear-gradient(180deg, rgba(11,11,11,1), rgba(26,26,26,0.5));">
+   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-10"><!-- Brand -->
+     <div>
+      <div class="flex items-center gap-3 mb-6">
+       <div class="w-10 h-10 rounded-full flex items-center justify-center" style="background: linear-gradient(135deg, #D4AF37, #B8960C);"><span class="text-obsidian font-cinzel font-bold text-lg">स</span>
+       </div>
+       <div>
+        <div class="font-cinzel text-gold text-sm font-bold" id="footer-company-name">
+         Saraswati Murti
+        </div>
+        <div class="text-[10px] text-gold-light tracking-[0.2em] uppercase opacity-70">
+         Kala Kendra
+        </div>
+       </div>
+      </div>
+      <p class="text-gray-500 text-sm leading-relaxed">Handcrafted marble statues with devotion since 1985. Each creation is a testament to India's rich sculptural heritage.</p>
+     </div><!-- Quick Links -->
+     <div>
+      <h4 class="font-cinzel text-gold text-sm font-semibold mb-6 tracking-wider">Quick Links</h4>
+      <div class="space-y-3"><a class="text-gray-400 text-sm hover:text-gold transition-colors cursor-pointer block" onclick="navigateTo('home')">Home</a> <a class="text-gray-400 text-sm hover:text-gold transition-colors cursor-pointer block" onclick="navigateTo('products')">Collection</a> <a class="text-gray-400 text-sm hover:text-gold transition-colors cursor-pointer block" onclick="navigateTo('about')">About Us</a> <a class="text-gray-400 text-sm hover:text-gold transition-colors cursor-pointer block" onclick="navigateTo('contact')">Contact</a>
+      </div>
+     </div><!-- Categories -->
+     <div>
+      <h4 class="font-cinzel text-gold text-sm font-semibold mb-6 tracking-wider">Categories</h4>
+      <div class="space-y-3"><a class="text-gray-400 text-sm hover:text-gold transition-colors cursor-pointer block" onclick="filterProducts('sai-baba')">Sai Baba Murti</a> <a class="text-gray-400 text-sm hover:text-gold transition-colors cursor-pointer block" onclick="filterProducts('krishna')">Krishna Murti</a> <a class="text-gray-400 text-sm hover:text-gold transition-colors cursor-pointer block" onclick="filterProducts('ram')">Ram Darbar</a> <a class="text-gray-400 text-sm hover:text-gold transition-colors cursor-pointer block" onclick="filterProducts('durga')">Durga Murti</a> <a class="text-gray-400 text-sm hover:text-gold transition-colors cursor-pointer block" onclick="filterProducts('custom')">Custom Orders</a>
+      </div>
+     </div><!-- Contact -->
+     <div>
+      <h4 class="font-cinzel text-gold text-sm font-semibold mb-6 tracking-wider">Contact Info</h4>
+      <div class="space-y-3 text-sm text-gray-400">
+       <p id="footer-address">📍 Marble Market, Jaipur, Rajasthan</p>
+       <p id="footer-phone">📞 +91 98765 43210</p>
+       <p>📧 info@saraswatimurti.com</p>
+      </div>
+      <div class="flex gap-3 mt-6"><a href="#" class="w-9 h-9 rounded-full glass flex items-center justify-center text-gray-400 hover:text-gold hover:border-gold/40 transition-all" aria-label="Facebook"><i data-lucide="facebook" style="width:16px;height:16px;"></i></a> <a href="#" class="w-9 h-9 rounded-full glass flex items-center justify-center text-gray-400 hover:text-gold hover:border-gold/40 transition-all" aria-label="Instagram"><i data-lucide="instagram" style="width:16px;height:16px;"></i></a> <a href="#" class="w-9 h-9 rounded-full glass flex items-center justify-center text-gray-400 hover:text-gold hover:border-gold/40 transition-all" aria-label="Youtube"><i data-lucide="youtube" style="width:16px;height:16px;"></i></a>
+      </div>
+     </div>
+    </div>
+    <div class="gold-line mt-12 mb-8"></div>
+    <div class="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-gray-600">
+     <p>© 2024 Saraswati Murti Kala Kendra. All rights reserved.</p>
+     <p class="font-cormorant italic text-gold/40">|| ॐ श्री सरस्वत्यै नमः ||</p>
+    </div>
+   </div>
+  </footer><!-- WhatsApp Float --> <a href="https://wa.me/919876543210" target="_blank" rel="noopener noreferrer" class="whatsapp-float" aria-label="Chat on WhatsApp">
+   <svg viewbox="0 0 24 24" width="28" height="28" fill="white">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" /><path d="M12 0C5.373 0 0 5.373 0 12c0 2.625.846 5.059 2.284 7.034L.789 23.492a.5.5 0 00.612.638l4.704-1.345A11.95 11.95 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-2.319 0-4.478-.67-6.311-1.822l-.443-.277-3.072.878.734-2.88-.292-.466A9.955 9.955 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z" />
+   </svg></a>
+  <script>
+// ============ PRODUCT DATA ============
+const PRODUCTS = [
+  { id: 1, name: "Sai Baba Blessing", category: "sai-baba", size: "medium", price: 25000, emoji: "🙏", material: "Premium Makrana Marble", height: "18 inch", finish: "Hand-painted with gold accents", weight: "12 kg", desc: "A serene representation of Shirdi Sai Baba in blessing posture, hand-carved from a single block of premium Makrana marble." },
+  { id: 2, name: "Krishna with Flute", category: "krishna", size: "medium", price: 32000, emoji: "🦚", material: "White Makrana Marble", height: "24 inch", finish: "Polished with gold leaf", weight: "18 kg", desc: "Lord Krishna in his iconic pose playing the divine flute, adorned with a peacock feather crown and intricate jewelry details." },
+  { id: 3, name: "Ram Darbar Set", category: "ram", size: "large", price: 85000, emoji: "🏹", material: "Premium Makrana Marble", height: "36 inch", finish: "Gold painted details", weight: "65 kg", desc: "Complete Ram Darbar including Lord Ram, Sita, Lakshman, and Hanuman in a grand composition." },
+  { id: 4, name: "Durga Maa", category: "durga", size: "large", price: 55000, emoji: "🔱", material: "Makrana Marble", height: "30 inch", finish: "Multi-color hand paint", weight: "35 kg", desc: "Goddess Durga in her powerful eight-armed form, mounted on her lion, with exquisite detailing." },
+  { id: 5, name: "Hanuman Ji", category: "hanuman", size: "medium", price: 28000, emoji: "🐒", material: "White Marble", height: "24 inch", finish: "Orange & gold accents", weight: "20 kg", desc: "Lord Hanuman in his devotional pose, carrying the Sanjeevani mountain." },
+  { id: 6, name: "Ganesh Ji", category: "ganesh", size: "small", price: 15000, emoji: "🐘", material: "Makrana Marble", height: "12 inch", finish: "Polished white with gold", weight: "6 kg", desc: "Lord Ganesha in a seated position with beautiful ornamental details and a natural marble glow." },
+  { id: 7, name: "Sai Baba Seated", category: "sai-baba", size: "large", price: 45000, emoji: "🙏", material: "Premium Makrana", height: "36 inch", finish: "Realistic hand paint", weight: "40 kg", desc: "A life-like seated Sai Baba with intricate facial features and flowing robes." },
+  { id: 8, name: "Radha Krishna Pair", category: "krishna", size: "medium", price: 42000, emoji: "💕", material: "White Makrana Marble", height: "24 inch", finish: "Multi-color with gold", weight: "25 kg", desc: "Divine couple Radha and Krishna in an enchanting dance pose." },
+  { id: 9, name: "Custom Temple Murti", category: "custom", size: "xlarge", price: 0, emoji: "✨", material: "As per requirement", height: "Custom", finish: "Custom", weight: "Varies", desc: "Fully customized marble statue designed and crafted to your specifications." },
+  { id: 10, name: "Small Krishna", category: "krishna", size: "small", price: 12000, emoji: "🦚", material: "White Marble", height: "8 inch", finish: "Polished with paint", weight: "3 kg", desc: "A beautiful small Krishna murti perfect for home temple." },
+  { id: 11, name: "Hanuman Flying", category: "hanuman", size: "large", price: 48000, emoji: "🐒", material: "Premium Marble", height: "36 inch", finish: "Dynamic paint finish", weight: "38 kg", desc: "Dynamic flying Hanuman sculpture capturing the moment of his leap to Lanka." },
+  { id: 12, name: "Ganesh Standing", category: "ganesh", size: "medium", price: 22000, emoji: "🐘", material: "Makrana Marble", height: "18 inch", finish: "Gold & white", weight: "10 kg", desc: "Standing Ganesh Ji with detailed crown and ornaments." },
+];
+
+let cart = [];
+let currentFilter = 'all';
+let currentSizeFilter = 'all';
+let currentPriceSort = 'default';
+
+// ============ NAVIGATION ============
+function navigateTo(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  const target = document.getElementById('page-' + page);
+  if (target) {
+    target.classList.add('active');
+    // Re-trigger animations
+    target.querySelectorAll('.anim-fade-up, .anim-fade, .anim-scale').forEach(el => {
+      el.classList.remove('visible');
+      setTimeout(() => observeAnimations(), 50);
+    });
+  }
+  // Update nav
+  document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+  document.querySelectorAll(`.nav-link[data-page="${page}"]`).forEach(l => l.classList.add('active'));
+  // Scroll to top
+  document.getElementById('app-body').scrollTop = 0;
+
+  if (page === 'products') renderProductGrid();
+  if (page === 'cart') renderCart();
+
+  setTimeout(observeAnimations, 100);
+}
+
+function filterProducts(cat) {
+  currentFilter = cat;
+  navigateTo('products');
+  // Update filter chips
+  document.querySelectorAll('#filter-bar .filter-chip').forEach(c => {
+    c.classList.toggle('active', c.dataset.filter === cat);
+  });
+  renderProductGrid();
+}
+
+// ============ PRODUCT RENDERING ============
+function getFilteredProducts() {
+  let prods = [...PRODUCTS];
+  if (currentFilter !== 'all') prods = prods.filter(p => p.category === currentFilter);
+  if (currentSizeFilter !== 'all') prods = prods.filter(p => p.size === currentSizeFilter);
+  if (currentPriceSort === 'low') prods.sort((a, b) => a.price - b.price);
+  else if (currentPriceSort === 'high') prods.sort((a, b) => b.price - a.price);
+  return prods;
+}
+
+function applyFilter(f) {
+  currentFilter = f;
+  document.querySelectorAll('#filter-bar .filter-chip').forEach(c => c.classList.toggle('active', c.dataset.filter === f));
+  renderProductGrid();
+}
+function applySizeFilter(v) { currentSizeFilter = v; renderProductGrid(); }
+function applyPriceSort(v) { currentPriceSort = v; renderProductGrid(); }
+
+function productCard(p, delay) {
+  const priceStr = p.price > 0 ? `₹${p.price.toLocaleString('en-IN')}` : 'Get Quote';
+  return `
+  <div class="glass-card rounded-2xl overflow-hidden anim-fade-up visible" style="transition-delay:${delay}s;">
+    <div class="product-img-wrap h-48 sm:h-56 flex items-center justify-center relative" style="background: linear-gradient(135deg, rgba(212,175,55,0.05), rgba(26,26,26,0.8));">
+      <span class="text-6xl sm:text-7xl relative z-10" style="filter: drop-shadow(0 0 20px rgba(212,175,55,0.2));">${p.emoji}</span>
+    </div>
+    <div class="p-5">
+      <div class="flex items-start justify-between gap-2 mb-2">
+        <h3 class="font-cinzel text-white font-semibold text-sm leading-tight">${p.name}</h3>
+        <button class="text-gray-500 hover:text-gold transition-colors flex-shrink-0" onclick="event.stopPropagation(); showToast('Added to wishlist ❤️');" aria-label="Save ${p.name}">
+          <i data-lucide="heart" style="width:16px;height:16px;"></i>
+        </button>
+      </div>
+      <p class="text-gray-500 text-xs capitalize mb-3">${p.category.replace('-', ' ')} • ${p.height}</p>
+      <div class="flex items-center justify-between">
+        <span class="text-gold font-cinzel font-bold">${priceStr}</span>
+        <div class="flex gap-2">
+          <button class="btn-outline px-3 py-1.5 rounded-lg text-xs" onclick="event.stopPropagation(); openDetail(${p.id})">View</button>
+          <button class="btn-gold px-3 py-1.5 rounded-lg text-xs" onclick="event.stopPropagation(); addToCart(${p.id})">${p.price > 0 ? 'Add' : 'Enquire'}</button>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderProductGrid() {
+  const prods = getFilteredProducts();
+  const grid = document.getElementById('product-grid');
+  if (!prods.length) {
+    grid.innerHTML = `<div class="col-span-full text-center py-16"><div class="text-5xl mb-4">🔍</div><p class="text-gray-400">No statues found in this category.</p></div>`;
+  } else {
+    grid.innerHTML = prods.map((p, i) => productCard(p, i * 0.05)).join('');
+  }
+  lucide.createIcons();
+}
+
+function renderFeatured() {
+  const featured = PRODUCTS.filter(p => [1, 2, 4, 6].includes(p.id));
+  document.getElementById('featured-grid').innerHTML = featured.map((p, i) => productCard(p, i * 0.1)).join('');
+  lucide.createIcons();
+}
+
+// ============ PRODUCT DETAIL ============
+function openDetail(id) {
+  const p = PRODUCTS.find(x => x.id === id);
+  if (!p) return;
+  const priceStr = p.price > 0 ? `₹${p.price.toLocaleString('en-IN')}` : 'Request Quote';
+  document.getElementById('detail-content').innerHTML = `
+  <div>
+    <div class="zoom-container rounded-2xl overflow-hidden glass" style="height: 400px; display:flex; align-items:center; justify-content:center; background: linear-gradient(135deg, rgba(212,175,55,0.05), rgba(26,26,26,0.8));">
+      <span class="zoom-placeholder text-9xl" style="font-size:10rem; filter: drop-shadow(0 0 40px rgba(212,175,55,0.3));">${p.emoji}</span>
+    </div>
+    <div class="flex gap-3 mt-4">
+      <div class="flex-1 h-20 rounded-xl glass flex items-center justify-center text-3xl cursor-pointer">${p.emoji}</div>
+      <div class="flex-1 h-20 rounded-xl glass flex items-center justify-center text-3xl opacity-50 cursor-pointer">🔍</div>
+      <div class="flex-1 h-20 rounded-xl glass flex items-center justify-center text-3xl opacity-50 cursor-pointer">📐</div>
+    </div>
+  </div>
+  <div class="space-y-6">
+    <div>
+      <span class="text-gold text-xs tracking-[0.3em] uppercase">${p.category.replace('-', ' ')}</span>
+      <h1 class="font-cinzel text-3xl sm:text-4xl font-bold text-white mt-2">${p.name}</h1>
+      <div class="text-gold font-cinzel text-2xl font-bold mt-4">${priceStr}</div>
+    </div>
+    <p class="text-gray-400 leading-relaxed font-cormorant text-lg">${p.desc}</p>
+    <!-- Tabs -->
+    <div class="flex gap-2 border-b border-gold/10 pb-0">
+      <button class="detail-tab active" onclick="switchDetailTab(this, 'specs')">Specifications</button>
+      <button class="detail-tab" onclick="switchDetailTab(this, 'care')">Care Guide</button>
+    </div>
+    <div id="detail-tab-specs">
+      <div class="grid grid-cols-2 gap-4">
+        <div class="glass rounded-xl p-4"><span class="text-gray-500 text-xs">Material</span><div class="text-white text-sm mt-1">${p.material}</div></div>
+        <div class="glass rounded-xl p-4"><span class="text-gray-500 text-xs">Height</span><div class="text-white text-sm mt-1">${p.height}</div></div>
+        <div class="glass rounded-xl p-4"><span class="text-gray-500 text-xs">Finish</span><div class="text-white text-sm mt-1">${p.finish}</div></div>
+        <div class="glass rounded-xl p-4"><span class="text-gray-500 text-xs">Weight</span><div class="text-white text-sm mt-1">${p.weight}</div></div>
+      </div>
+    </div>
+    <div id="detail-tab-care" class="hidden">
+      <div class="text-gray-400 text-sm space-y-2">
+        <p>• Wipe with a soft, dry cloth regularly</p>
+        <p>• Avoid direct sunlight for painted surfaces</p>
+        <p>• Do not use chemical cleaners</p>
+        <p>• For outdoor placement, apply marble sealant annually</p>
+      </div>
+    </div>
+    <div class="flex flex-wrap gap-3 pt-4">
+      <button class="btn-gold px-8 py-4 rounded-xl font-cinzel text-sm tracking-wider flex-1 sm:flex-none" onclick="addToCart(${p.id})">${p.price > 0 ? 'Add to Cart' : 'Request Quote'}</button>
+      <a href="https://wa.me/919876543210?text=Hi, I'm interested in ${encodeURIComponent(p.name)}" target="_blank" rel="noopener noreferrer" class="btn-outline px-6 py-4 rounded-xl text-sm font-medium inline-flex items-center gap-2 flex-1 sm:flex-none justify-center">
+        <span>💬</span> WhatsApp
+      </a>
+      <a href="tel:+919876543210" class="btn-outline px-6 py-4 rounded-xl text-sm font-medium inline-flex items-center gap-2 justify-center">
+        <i data-lucide="phone" style="width:16px;height:16px;"></i> Call
+      </a>
+    </div>
+  </div>`;
+
+  // Related products
+  const related = PRODUCTS.filter(x => x.category === p.category && x.id !== p.id).slice(0, 4);
+  document.getElementById('related-grid').innerHTML = related.map((r, i) => productCard(r, i * 0.1)).join('');
+
+  navigateTo('detail');
+  lucide.createIcons();
+}
+
+function switchDetailTab(btn, tab) {
+  document.querySelectorAll('.detail-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('detail-tab-specs').classList.toggle('hidden', tab !== 'specs');
+  document.getElementById('detail-tab-care').classList.toggle('hidden', tab !== 'care');
+}
+
+// ============ CART ============
+function addToCart(id) {
+  const p = PRODUCTS.find(x => x.id === id);
+  if (!p) return;
+  const existing = cart.find(c => c.id === id);
+  if (existing) existing.qty++;
+  else cart.push({ ...p, qty: 1 });
+  updateCartBadge();
+  showToast(`${p.name} added to cart ✓`);
+}
+
+function removeFromCart(id) {
+  cart = cart.filter(c => c.id !== id);
+  updateCartBadge();
+  renderCart();
+}
+
+function updateCartBadge() {
+  const total = cart.reduce((s, c) => s + c.qty, 0);
+  document.getElementById('cart-count').textContent = total;
+}
+
+function renderCart() {
+  const el = document.getElementById('cart-content');
+  if (!cart.length) {
+    el.innerHTML = `<div class="glass rounded-3xl p-12 text-center"><div class="text-6xl mb-4">🛒</div><h3 class="font-cinzel text-xl text-white mb-2">Your cart is empty</h3><p class="text-gray-400 mb-6">Explore our divine collection</p><button class="btn-gold px-6 py-3 rounded-xl font-cinzel text-sm" onclick="navigateTo('products')">Browse Collection</button></div>`;
+    return;
+  }
+  const total = cart.reduce((s, c) => s + (c.price * c.qty), 0);
+  let html = `<div class="space-y-4 mb-8">`;
+  cart.forEach(c => {
+    html += `
+    <div class="glass rounded-2xl p-5 flex items-center gap-4">
+      <div class="w-16 h-16 rounded-xl flex items-center justify-center flex-shrink-0" style="background: rgba(212,175,55,0.1);">
+        <span class="text-3xl">${c.emoji}</span>
+      </div>
+      <div class="flex-1 min-w-0">
+        <h4 class="font-cinzel text-white text-sm font-semibold truncate">${c.name}</h4>
+        <p class="text-gray-500 text-xs">${c.height} • Qty: ${c.qty}</p>
+        <p class="text-gold font-cinzel font-bold text-sm mt-1">${c.price > 0 ? '₹' + (c.price * c.qty).toLocaleString('en-IN') : 'Quote'}</p>
+      </div>
+      <button class="text-gray-500 hover:text-red-400 transition-colors p-2" onclick="removeFromCart(${c.id})" aria-label="Remove ${c.name}">
+        <i data-lucide="trash-2" style="width:18px;height:18px;"></i>
+      </button>
+    </div>`;
+  });
+  html += `</div>`;
+  html += `
+  <div class="glass rounded-2xl p-6 mb-6">
+    <div class="flex justify-between items-center mb-4"><span class="text-gray-400">Subtotal</span><span class="text-white font-cinzel font-bold">₹${total.toLocaleString('en-IN')}</span></div>
+    <div class="flex justify-between items-center mb-4"><span class="text-gray-400">Shipping</span><span class="text-gray-400 text-sm">Calculated at checkout</span></div>
+    <div class="gold-line my-4"></div>
+    <div class="flex justify-between items-center"><span class="text-white font-semibold">Total</span><span class="text-gold font-cinzel text-xl font-bold">₹${total.toLocaleString('en-IN')}</span></div>
+  </div>
+  <div class="flex flex-wrap gap-3">
+    <a href="https://wa.me/919876543210?text=${encodeURIComponent('Hi, I would like to place an order. Cart total: ₹' + total.toLocaleString('en-IN'))}" target="_blank" rel="noopener noreferrer" class="btn-gold px-8 py-4 rounded-xl font-cinzel text-sm tracking-wider flex-1 text-center">
+      Order via WhatsApp
+    </a>
+    <button class="btn-outline px-8 py-4 rounded-xl text-sm font-medium flex-1" onclick="navigateTo('contact')">Request Callback</button>
+  </div>`;
+  el.innerHTML = html;
+  lucide.createIcons();
+}
+
+// ============ ACCOUNT ============
+function showAccountTab(tab) {
+  const content = document.getElementById('account-tab-content');
+  if (tab === 'saved') {
+    content.innerHTML = `<div class="text-center py-12"><div class="text-5xl mb-4">❤️</div><p class="text-gray-400">No saved products yet.</p><button class="btn-gold px-6 py-3 rounded-xl font-cinzel text-sm mt-4" onclick="navigateTo('products')">Explore Collection</button></div>`;
+  } else {
+    content.innerHTML = `<div class="text-center py-12"><div class="text-5xl mb-4">📦</div><p class="text-gray-400">No orders yet. Start exploring our collection!</p><button class="btn-gold px-6 py-3 rounded-xl font-cinzel text-sm mt-4" onclick="navigateTo('products')">Browse Collection</button></div>`;
+  }
+}
+
+// ============ CONTACT FORM ============
+function handleContactSubmit(e) {
+  e.preventDefault();
+  document.getElementById('contact-form').classList.add('hidden');
+  document.getElementById('contact-success').classList.remove('hidden');
+}
+
+// ============ MOBILE MENU ============
+function toggleMobileMenu() {
+  const menu = document.getElementById('mobile-menu');
+  if (menu.style.maxHeight === '0px' || !menu.style.maxHeight) {
+    menu.style.maxHeight = '300px';
+  } else {
+    menu.style.maxHeight = '0px';
+  }
+}
+
+// ============ TOAST ============
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// ============ SCROLL ANIMATIONS ============
+function observeAnimations() {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+  document.querySelectorAll('.anim-fade-up, .anim-fade, .anim-scale').forEach(el => observer.observe(el));
+}
+
+// ============ NAVBAR SCROLL ============
+let lastScroll = 0;
+document.getElementById('app-body').addEventListener('scroll', () => {
+  const nav = document.getElementById('navbar');
+  const scrollTop = document.getElementById('app-body').scrollTop;
+  if (scrollTop > 100) {
+    nav.style.background = 'rgba(11,11,11,0.95)';
+    nav.style.borderBottomColor = 'rgba(212,175,55,0.2)';
+  } else {
+    nav.style.background = 'rgba(11,11,11,0.85)';
+    nav.style.borderBottomColor = 'rgba(212,175,55,0.1)';
+  }
+  lastScroll = scrollTop;
+});
+
+// ============ ELEMENT SDK ============
+const defaultConfig = {
+  hero_title: 'Divine Marble Creations',
+  hero_subtitle: 'Handcrafted with devotion, each marble masterpiece carries the soul of centuries-old Indian artistry.',
+  company_name: 'Saraswati Murti Kala Kendra',
+  phone_number: '+91 98765 43210',
+  address_text: 'Marble Market, Jaipur, Rajasthan',
+  background_color: '#0B0B0B',
+  accent_color: '#D4AF37',
+  text_color: '#FFFFFF',
+  surface_color: '#1A1A1A',
+  secondary_action_color: '#888888',
+  font_family: 'Cinzel',
+  font_size: 16
+};
+
+function applyConfig(config) {
+  const c = { ...defaultConfig, ...config };
+
+  // Text content
+  const heroTitle = document.getElementById('hero-title');
+  if (heroTitle) {
+    const words = (c.hero_title || defaultConfig.hero_title).split(' ');
+    if (words.length >= 3) heroTitle.innerHTML = `<span class="text-white">${words[0]}</span><br><span class="text-transparent bg-clip-text" style="background: linear-gradient(135deg, ${c.accent_color}, ${c.accent_color}88);">${words[1]}</span><br><span class="text-white">${words.slice(2).join(' ')}</span>`;
+    else heroTitle.textContent = c.hero_title;
+  }
+  const heroSub = document.getElementById('hero-subtitle');
+  if (heroSub) heroSub.textContent = c.hero_subtitle || defaultConfig.hero_subtitle;
+
+  // Company name
+  ['nav-company-name', 'footer-company-name'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = (c.company_name || defaultConfig.company_name).split(' ').slice(0, 2).join(' ');
+  });
+
+  // Contact info
+  const ph = c.phone_number || defaultConfig.phone_number;
+  const addr = c.address_text || defaultConfig.address_text;
+  const phDisplay = document.getElementById('contact-phone-display');
+  if (phDisplay) phDisplay.textContent = ph;
+  const fPhone = document.getElementById('footer-phone');
+  if (fPhone) fPhone.textContent = '📞 ' + ph;
+  const fAddr = document.getElementById('footer-address');
+  if (fAddr) fAddr.textContent = '📍 ' + addr;
+  const cAddr = document.getElementById('contact-address');
+  if (cAddr) cAddr.textContent = c.company_name + ', ' + addr + ', India';
+
+  // Colors
+  document.body.style.background = c.background_color;
+  document.documentElement.style.background = c.background_color;
+
+  // Font
+  const font = c.font_family || defaultConfig.font_family;
+  document.querySelectorAll('.font-cinzel').forEach(el => { el.style.fontFamily = `${font}, Cinzel, serif`; });
+
+  // Font size
+  const base = c.font_size || defaultConfig.font_size;
+  document.body.style.fontSize = `${base}px`;
+}
+
+window.elementSdk.init({
+  defaultConfig,
+  onConfigChange: async (config) => { applyConfig(config); },
+  mapToCapabilities: (config) => ({
+    recolorables: [
+      { get: () => config.background_color || defaultConfig.background_color, set: (v) => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+      { get: () => config.surface_color || defaultConfig.surface_color, set: (v) => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+      { get: () => config.text_color || defaultConfig.text_color, set: (v) => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+      { get: () => config.accent_color || defaultConfig.accent_color, set: (v) => { config.accent_color = v; window.elementSdk.setConfig({ accent_color: v }); } },
+      { get: () => config.secondary_action_color || defaultConfig.secondary_action_color, set: (v) => { config.secondary_action_color = v; window.elementSdk.setConfig({ secondary_action_color: v }); } },
+    ],
+    borderables: [],
+    fontEditable: {
+      get: () => config.font_family || defaultConfig.font_family,
+      set: (v) => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); }
+    },
+    fontSizeable: {
+      get: () => config.font_size || defaultConfig.font_size,
+      set: (v) => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); }
+    }
+  }),
+  mapToEditPanelValues: (config) => new Map([
+    ['hero_title', config.hero_title || defaultConfig.hero_title],
+    ['hero_subtitle', config.hero_subtitle || defaultConfig.hero_subtitle],
+    ['company_name', config.company_name || defaultConfig.company_name],
+    ['phone_number', config.phone_number || defaultConfig.phone_number],
+    ['address_text', config.address_text || defaultConfig.address_text],
+  ])
+});
+
+// ============ INIT ============
+renderFeatured();
+observeAnimations();
+lucide.createIcons();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9eb9ab3e254e8e86',t:'MTc3NjA3NDkwMC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
