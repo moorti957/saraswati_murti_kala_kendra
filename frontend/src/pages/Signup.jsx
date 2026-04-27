@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { User, Mail, Phone, Lock, Eye, EyeOff } from 'lucide-react'
+import { User, Mail, Lock, Eye, EyeOff } from 'lucide-react'
 import { useAuth } from '../contexts/AuthContext'
+import logo_saras from '../assets/images/image.png'
 
 const Signup = () => {
   const navigate = useNavigate()
@@ -9,7 +10,6 @@ const Signup = () => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    phone: '',
     password: '',
     confirmPassword: ''
   })
@@ -38,7 +38,7 @@ const Signup = () => {
 
     setIsLoading(true)
     try {
-      await signup(formData.name, formData.email, formData.password, formData.phone)
+      await signup(formData.name, formData.email, formData.password)
       navigate('/account')
     } catch (err) {
       setError(err)
@@ -52,7 +52,13 @@ const Signup = () => {
       <div className="max-w-md mx-auto px-4 sm:px-6 lg:px-8 w-full">
         <div className="glass rounded-3xl p-8 sm:p-10">
           <div className="text-center mb-8">
-            <div className="text-5xl mb-4">🙏</div>
+                <div className="mb-4 flex justify-center">
+              <img
+                src={logo_saras}
+                alt="logo"
+                className="w-32 h-32 object-contain drop-shadow-[0_0_20px_rgba(212,175,55,0.6)]"
+              />
+            </div>
             <h1 className="font-cinzel text-3xl font-bold text-white">Create Account</h1>
             <p className="text-gray-400 text-sm mt-2">Join our spiritual family</p>
             <div className="w-20 h-0.5 bg-gold mx-auto mt-4"></div>
@@ -86,21 +92,6 @@ const Signup = () => {
                   value={formData.email}
                   onChange={handleChange}
                   placeholder="you@example.com"
-                  className="w-full bg-white/5 border border-gold/20 rounded-xl pl-10 pr-4 py-3 text-white placeholder:text-gray-600 text-sm focus:border-gold/50 focus:outline-none"
-                />
-              </div>
-            </div>
-
-            <div>
-              <label htmlFor="phone" className="text-gray-400 text-sm mb-1 block">Phone Number</label>
-              <div className="relative">
-                <Phone size={18} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" />
-                <input
-                  type="tel"
-                  id="phone"
-                  value={formData.phone}
-                  onChange={handleChange}
-                  placeholder="+91 XXXXX XXXXX"
                   className="w-full bg-white/5 border border-gold/20 rounded-xl pl-10 pr-4 py-3 text-white placeholder:text-gray-600 text-sm focus:border-gold/50 focus:outline-none"
                 />
               </div>
